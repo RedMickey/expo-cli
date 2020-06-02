@@ -143,6 +143,24 @@ export class UpdateKeystore implements IView {
   }
 }
 
+export class RemoveKeystore implements IView {
+  constructor(private experience: string) {
+    this.experience = experience;
+  }
+
+  async open(ctx: Context): Promise<IView | null> {
+    await this.remove(ctx);
+    log(chalk.green('Keystore removed  successfully'));
+    return null;
+  }
+
+  async remove(ctx: Context): Promise<void> {
+    await ctx.api.deleteAsync(
+      `credentials/android/keystore/@${ctx.user.username}/${this.experience}`
+    );
+  }
+}
+
 export class UpdateFcmKey implements IView {
   experience: string;
 
